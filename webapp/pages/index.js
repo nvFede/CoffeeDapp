@@ -17,12 +17,14 @@ import {
 import Link from "next/link";
 import contractAbi from "../../hardhat/artifacts/contracts/Coffee.sol/Coffee.json";
 import Navbar from "../components/Navbar";
+import FormTip from "../components/FormTip";
+import Memo from "../components/Memo";
 
 const Home = () => {
   // Contract Address & ABI
   const contractAddress = "0x418CE20A77dC3AC3dFec018B9185783A548186E7";
   const contractABI = contractAbi.abi;
-  const ContractDeployerAddress = '0x1f33f06ae95a7c566F7C0B7c544909b9fC9cbC58'
+  const ContractDeployerAddress = "0x1f33f06ae95a7c566F7C0B7c544909b9fC9cbC58";
 
   // Component state
   const [currentAccount, setCurrentAccount] = useState("");
@@ -72,9 +74,11 @@ const Home = () => {
         setBalance(ethers.utils.formatEther(bal));
 
         const a = contractAbi.contractName;
-        console.log("🚀 ~ file: index.js ~ line 25 ~ Home ~ a", a)
-        console.log("🚀 ~ file: index.js ~ line 25 ~ Home ~ contractAbi", contractAbi)
-
+        console.log("🚀 ~ file: index.js ~ line 25 ~ Home ~ a", a);
+        console.log(
+          "🚀 ~ file: index.js ~ line 25 ~ Home ~ contractAbi",
+          contractAbi
+        );
       } catch (error) {
         console.log(error);
       }
@@ -155,21 +159,20 @@ const Home = () => {
         signer
       );
 
-      const currentSigner = await signer.getAddress()
+      const currentSigner = await signer.getAddress();
 
-     if ( owner == currentSigner) {
-      console.log('current owner')
-      const withdrawTx = await buyMeACoffee.withdraw()
-      await withdrawTx.wait()
-      console.log('Funds Withdrawed')
-      const bal = await provider.getBalance(contractAddress);
-      console.log(bal.toString())
-      setBalance(bal.toString());
-     } else {
-       alert('only the owner can withdraw the balance')
-     }
+      if (owner == currentSigner) {
+        console.log("current owner");
+        const withdrawTx = await buyMeACoffee.withdraw();
+        await withdrawTx.wait();
+        console.log("Funds Withdrawed");
+        const bal = await provider.getBalance(contractAddress);
+        console.log(bal.toString());
+        setBalance(bal.toString());
+      } else {
+        alert("only the owner can withdraw the balance");
+      }
     }
-        
 
     console.log();
   };
@@ -213,11 +216,14 @@ const Home = () => {
   }, []);
 
   return (
-
     <Flex direction="column" justify="center" align="center" h="calc(100vh)">
-      <Navbar currentAccount={currentAccount} owner={owner}
-      connectWallet={connectWallet} withdrawBalance={withdrawBalance}/>
-    
+      <Navbar
+        currentAccount={currentAccount}
+        owner={owner}
+        connectWallet={connectWallet}
+        withdrawBalance={withdrawBalance}
+      />
+
       <Spacer />
 
       <Flex
@@ -229,80 +235,23 @@ const Home = () => {
       >
         {currentAccount ? (
           <Flex>
-             <Box
-            maxW="lg"
-            borderWidth="1px"
-            borderRadius="lg"
-            overflow="hidden"
-            p={3}
-            bgColor="white"
-          >
-            <FormControl as="fieldset">
-              <Input
-                placeholder="Enter your name"
-                type="text"
-                id="name"
-                onChange={onNameChange}
-              />
-
-              <Input
-                type="text"
-                mt={4}
-                placeholder="Write me a message"
-                id="message"
-                onChange={onMessageChange}
-              />
-
-              <ButtonGroup gap={4}>
-                <Button
-                  mt={4}
-                  colorScheme="cyan"
-                  onClick={() => buyCoffee("0.001")}
-                >
-                  Buy Coffee
-                </Button>
-                <Button
-                  mt={4}
-                  colorScheme="cyan"
-                  onClick={() => buyCoffee("0.002")}
-                >
-                  Buy Lg Coffee
-                </Button>
-                <Button
-                  mt={4}
-                  colorScheme="cyan"
-                  onClick={() => buyCoffee("0.005")}
-                >
-                  Buy Coffee + Muffin
-                </Button>
-              </ButtonGroup>
-            </FormControl>
-
-            
-          </Box>
-
-          <Box>
-            {currentAccount &&
-        memos.map((memo, idx) => {
-          return (
             <Box
-              key={idx}
-              style={{
-                border: "2px solid",
-                "border-radius": "5px",
-                padding: "5px",
-                margin: "5px",
-              }}
+              maxW="lg"
+              borderWidth="1px"
+              borderRadius="lg"
+              overflow="hidden"
+              p={3}
+              bgColor="white"
             >
-              <Text >"{memo.message}"</Text>
-              <Text>
-                From: {memo.name} at {memo.timestamp.toString()}
-              </Text>
+              <FormTip
+                onNameChange={onNameChange}
+                onMessageChange={onMessageChange}
+                buyCoffee={buyCoffee}
+              />
             </Box>
-          );
-        })}
-          </Box>
-       </Flex>
+
+            <Memo memos={memos} currentAccount={currentAccount} />
+          </Flex>
         ) : (
           <Box maxW="lg" bgColor="white" borderRadius="lg" p={5}>
             <Heading mb={5}>Buy me a Coffee Dapp!</Heading>
@@ -327,8 +276,6 @@ const Home = () => {
           </Box>
         )}
       </Flex>
-
-      
 
       <Spacer />
 

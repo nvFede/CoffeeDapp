@@ -2,7 +2,7 @@ import React from 'react';
 
 import { FormControl, Input, Text, Button, ButtonGroup } from '@chakra-ui/react';
 
-const FormTip = () => {
+const FormTip = ({onNameChange, onMessageChange, buyCoffee}) => {
     return (
         <FormControl as="fieldset">
               <Input
