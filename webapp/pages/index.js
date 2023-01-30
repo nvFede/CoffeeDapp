@@ -15,7 +15,7 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import contractAbi from "../../hardhat/artifacts/contracts/Coffee.sol/Coffee.json";
+import contractAbi from "../contracts/Coffee.sol/Coffee.json";
 import Navbar from "../components/Navbar";
 import FormTip from "../components/FormTip";
 import Memo from "../components/Memo";
