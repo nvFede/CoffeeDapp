@@ -290,7 +290,7 @@ const Home = () => {
       >
         <Text>
           {" "}
-          Built with ❤ by <a href="http://www.federico.com">Federico</a>
+          Built with ❤ by <a href="https://github.com/nvFede/">Federico</a>
         </Text>
 
         <Spacer />
